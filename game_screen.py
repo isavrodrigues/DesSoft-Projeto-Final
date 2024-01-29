@@ -13,6 +13,8 @@ def colisao_entre_circulos(x1, y1, raio1, x2, y2, raio2):
     else:
         return False
     
+    
+    
 
 def game_screen(window):
     # Variável para o ajuste de velocidade
@@ -36,7 +38,7 @@ def game_screen(window):
 
         # ----- Gera saídas
         window.fill(BLACK)  # Preenche com a cor branca
-
+        pygame.draw.circle(window, (255,0,0), (WIDTH//2, HEIGHT//2), 50)
         pygame.display.update()  # Mostra o novo frame para o jogador
 
     return state
