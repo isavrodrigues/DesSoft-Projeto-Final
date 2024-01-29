@@ -1,5 +1,5 @@
 import pygame
-from config import FPS, WIDTH, HEIGHT, BLACK
+from config import FPS, WIDTH, HEIGHT, BLACK, RED, BLUE, GREEN, YELLOW
 from assets import carrega_arquivos
 import math
 import random
@@ -22,12 +22,13 @@ def verifica_colisoes(circle, lista_circles):
 
 def criar_numeros(intervalo):
     lista_circles = []
+    lista_cores = [RED, BLUE, YELLOW, GREEN]
     for num in range(intervalo):
         num_in_circle = num
         raio = random.randint(50, 80)
         x_circle = random.randint(raio, WIDTH - raio)
         y_circle = random.randint(raio, HEIGHT - raio)
-        cor_cicle = (255,0,0)
+        cor_cicle = random.choice(lista_cores)
         # cor_cicle = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         fonte = pygame.font.SysFont(None, raio)
         circle = {'x': x_circle, 'y': y_circle, 'r': raio, 'cor': cor_cicle, 'texto': fonte, 'num_circle': num_in_circle}
@@ -55,7 +56,7 @@ def game_screen(window):
     state = PLAYING
 
     # guardando lista de circulos
-    circles = criar_numeros(4)
+    circles = criar_numeros(8)
     # ===== Loop principal =====
     while state != DONE:
         clock.tick(FPS)
