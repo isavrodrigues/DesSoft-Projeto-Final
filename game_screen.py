@@ -56,7 +56,8 @@ def game_screen(window):
     clock = pygame.time.Clock()
     counter, conta = 40, '40'.rjust(3)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
-    fonte_setup = pygame.font.SysFont('Consolas', 30)    
+    fonte_setup = pygame.font.SysFont('Consolas', 30)   
+    inicio_sequencia = pygame.time.get_ticks() 
     dicionario_de_arquivos = carrega_arquivos()
 
     DONE = 0
@@ -74,53 +75,57 @@ def game_screen(window):
     # ===== Loop principal =====
     while state != DONE:
         clock.tick(FPS)
+        # Verifica se o tempo expirou
+        tempo_atual = pygame.time.get_ticks()
+        tempo_limite = (inicial - 2) * 1000  
+        if (tempo_atual - inicio_sequencia) > tempo_limite:
+           
+            circles = criar_numeros(inicial)
+            inicio_sequencia = pygame.time.get_ticks()
+            cont = 1
 
-        # ----- Trata eventos
+        # Trata eventos
         for event in pygame.event.get():
-            # ----- Verifica consequências
+            # Verifica consequências
             if event.type == pygame.QUIT:
                 state = DONE
-            if event.type==pygame.USEREVENT:
-                counter-=1
-                conta=str(counter).rjust(3) if counter>-1 else state==DONE
+            if event.type == pygame.USEREVENT:
+                counter -= 1
+                conta = str(counter).rjust(3) if counter > -1 else state == DONE
             if event.type == pygame.MOUSEBUTTONDOWN:
-                # captando x e y do ponto do clique
                 x_mouse, y_mouse = pygame.mouse.get_pos()
-                
                 for circulo in circles:
-                    if colisao_ponto_circulo(x_mouse,y_mouse,circulo['x'],circulo['y'],circulo['r']) == True:
+                    if colisao_ponto_circulo(x_mouse, y_mouse, circulo['x'], circulo['y'], circulo['r']):
                         if circulo['num_circle'] == cont:
                             cont += 1
                             circles.remove(circulo)
                         else:
+                            # Reinicia a mesma sequência se clicar no número errado
                             circles = criar_numeros(inicial)
                             cont = 1
+                            inicio_sequencia = pygame.time.get_ticks()
 
-        if circles == []:
-            inicial += 1
+        # Verifica se todos os números da sequência foram clicados
+        if not circles:
+            inicial += 1 
             cont = 1
             pontuacao += 1
             circles = criar_numeros(inicial)
-            print(pontuacao)
-       
-        # ----- Gera saídas
-        window.fill(BLACK)  # Preenche com a cor branca
+            inicio_sequencia = pygame.time.get_ticks() 
+
+        # Renderização
+        window.fill(BLACK)
         for circulo in circles:
             pygame.draw.circle(window, circulo['cor'], (circulo['x'], circulo['y']), circulo['r'])
             font = circulo['texto']
             text = font.render(str(circulo['num_circle']), True, (0, 0, 0))
             text_rect = text.get_rect(center=(circulo['x'], circulo['y']))
-            window.blit(text, text_rect.topleft)      
+            window.blit(text, text_rect.topleft)
 
-        window.blit(fonte_setup.render(conta, True, (255,255,255)), (32, 48))
-
-        # colocando pontuação na tela de jogo
-        window.blit(fonte_setup.render(f'ponto: {str(pontuacao)}', True, (255,255,255)), (750,48))
-        # pygame.display.flip()
-        pygame.display.update()  # Mostra o novo frame para o jogador
+        window.blit(fonte_setup.render(conta, True, (255, 255, 255)), (32, 48))
+        window.blit(fonte_setup.render(f'ponto: {str(pontuacao)}', True, (255, 255, 255)), (750, 48))
 
         
-        
+        pygame.display.update()
 
     return state
-   
