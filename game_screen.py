@@ -56,17 +56,21 @@ def game_screen(window):
     clock = pygame.time.Clock()
     counter, conta = 40, '40'.rjust(3)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
-    font = pygame.font.SysFont('Consolas', 30)    
+    fonte_setup = pygame.font.SysFont('Consolas', 30)    
     dicionario_de_arquivos = carrega_arquivos()
 
     DONE = 0
     PLAYING = 1
     state = PLAYING
 
+    # numero inicial de circulos
+    inicial = 5
     # guardando lista de circulos
-    circles = criar_numeros(5)
+    circles = criar_numeros(inicial)
     # contador da sequencia numerica
     cont = 1
+    #pontuacao
+    pontuacao = 0
     # ===== Loop principal =====
     while state != DONE:
         clock.tick(FPS)
@@ -89,11 +93,15 @@ def game_screen(window):
                             cont += 1
                             circles.remove(circulo)
                         else:
-                            circles = criar_numeros(5)
+                            circles = criar_numeros(inicial)
                             cont = 1
 
-
-       
+        if circles == []:
+            inicial += 1
+            cont = 1
+            pontuacao += 1
+            circles = criar_numeros(inicial)
+            print(pontuacao)
        
         # ----- Gera saídas
         window.fill(BLACK)  # Preenche com a cor branca
@@ -104,10 +112,12 @@ def game_screen(window):
             text_rect = text.get_rect(center=(circulo['x'], circulo['y']))
             window.blit(text, text_rect.topleft)      
 
+        window.blit(fonte_setup.render(conta, True, (255,255,255)), (32, 48))
+
+        # colocando pontuação na tela de jogo
+        window.blit(fonte_setup.render(f'ponto: {str(pontuacao)}', True, (255,255,255)), (750,48))
+        # pygame.display.flip()
         pygame.display.update()  # Mostra o novo frame para o jogador
-        window.blit(font.render(conta, True, (255,255,255)), (32, 48))
-        pygame.display.flip()
-        clock.tick(60)
 
         
         
