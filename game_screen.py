@@ -31,7 +31,7 @@ def criar_numeros(intervalo):
         cor_cicle = random.choice(lista_cores)
         # cor_cicle = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         fonte = pygame.font.SysFont(None, raio)
-        circle = {'x': x_circle, 'y': y_circle, 'r': raio, 'cor': cor_cicle, 'texto': fonte, 'num_circle': num_in_circle}
+        circle = {'x': x_circle, 'y': y_circle, 'r': raio, 'cor': cor_cicle, 'texto': fonte, 'num_circle': num_in_circle + 1}
         if lista_circles == []:
             lista_circles.append(circle)
         else:
@@ -39,12 +39,17 @@ def criar_numeros(intervalo):
                 raio = random.randint(50, 80)
                 x_circle = random.randint(raio, WIDTH - raio)
                 y_circle = random.randint(raio, HEIGHT - raio)
-                circle = {'x': x_circle, 'y': y_circle, 'r': raio, 'cor': cor_cicle, 'texto': fonte, 'num_circle': num_in_circle}
+                circle = {'x': x_circle, 'y': y_circle, 'r': raio, 'cor': cor_cicle, 'texto': fonte, 'num_circle': num_in_circle + 1}
             lista_circles.append(circle)
 
     return lista_circles
 
-
+def colisao_ponto_circulo(x_ponto,y_ponto,x_circle,y_circle,r_circle):
+    distancia = math.sqrt((x_ponto-x_circle)**2 + (y_ponto-y_circle)**2)
+    if distancia <= r_circle:
+        return True
+    else:
+        return False
 
 def game_screen(window):
     # Variável para o ajuste de velocidade
@@ -60,6 +65,8 @@ def game_screen(window):
 
     # guardando lista de circulos
     circles = criar_numeros(5)
+    # contador da sequencia numerica
+    cont = 1
     # ===== Loop principal =====
     while state != DONE:
         clock.tick(FPS)
@@ -72,6 +79,20 @@ def game_screen(window):
             if event.type==pygame.USEREVENT:
                 counter-=1
                 conta=str(counter).rjust(3) if counter>-1 else state==DONE
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # captando x e y do ponto do clique
+                x_mouse, y_mouse = pygame.mouse.get_pos()
+                
+                for circulo in circles:
+                    if colisao_ponto_circulo(x_mouse,y_mouse,circulo['x'],circulo['y'],circulo['r']) == True:
+                        if circulo['num_circle'] == cont:
+                            cont += 1
+                            circles.remove(circulo)
+                        else:
+                            circles = criar_numeros(5)
+                            cont = 1
+
+
        
        
         # ----- Gera saídas
@@ -79,13 +100,15 @@ def game_screen(window):
         for circulo in circles:
             pygame.draw.circle(window, circulo['cor'], (circulo['x'], circulo['y']), circulo['r'])
             font = circulo['texto']
-            text = font.render(str(circulo['num_circle']+1), True, (0, 0, 0))
+            text = font.render(str(circulo['num_circle']), True, (0, 0, 0))
             text_rect = text.get_rect(center=(circulo['x'], circulo['y']))
-            window.blit(text, text_rect.topleft)
+            window.blit(text, text_rect.topleft)      
+
         pygame.display.update()  # Mostra o novo frame para o jogador
         window.blit(font.render(conta, True, (255,255,255)), (32, 48))
         pygame.display.flip()
         clock.tick(60)
+
         
         
 
