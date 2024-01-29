@@ -18,6 +18,16 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
+COR1 = (249, 231, 159)
+COR2 = (222, 49, 99)
+COR3 = (64, 224, 208)
+COR4= (204, 204, 255)
+COR5 = (64, 224, 208)
+COR6 = (204, 204, 255)
+COR7 = (249, 231, 159)
+COR8 = (222, 49, 99)
+
+
 # Estados para controle do fluxo da aplicação
 INIT = 0
 GAME = 1

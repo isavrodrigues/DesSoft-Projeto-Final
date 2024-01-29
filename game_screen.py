@@ -1,5 +1,5 @@
 import pygame
-from config import FPS, WIDTH, HEIGHT, BLACK, RED, BLUE, GREEN, YELLOW
+from config import FPS, WIDTH, HEIGHT, BLACK, RED, BLUE, GREEN, YELLOW, COR1, COR2, COR3, COR4, COR5, COR6, COR7, COR8
 from assets import carrega_arquivos
 import math
 import random
@@ -22,7 +22,7 @@ def verifica_colisoes(circle, lista_circles):
 
 def criar_numeros(intervalo):
     lista_circles = []
-    lista_cores = [RED, BLUE, YELLOW, GREEN]
+    lista_cores = [COR1, COR2, COR3, COR4, COR5, COR6, COR7, COR8]
     for num in range(intervalo):
         num_in_circle = num
         raio = random.randint(50, 80)
