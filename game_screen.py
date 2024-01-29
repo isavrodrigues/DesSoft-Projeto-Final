@@ -80,7 +80,8 @@ def game_screen(window):
             pygame.draw.circle(window, circulo['cor'], (circulo['x'], circulo['y']), circulo['r'])
             font = circulo['texto']
             text = font.render(str(circulo['num_circle']+1), True, (0, 0, 0))
-            window.blit(text, (circulo['x'], circulo['y']))
+            text_rect = text.get_rect(center=(circulo['x'], circulo['y']))
+            window.blit(text, text_rect.topleft)
         pygame.display.update()  # Mostra o novo frame para o jogador
         window.blit(font.render(conta, True, (255,255,255)), (32, 48))
         pygame.display.flip()
