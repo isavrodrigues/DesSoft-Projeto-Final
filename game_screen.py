@@ -43,12 +43,15 @@ def criar_numeros(intervalo):
             lista_circles.append(circle)
 
     return lista_circles
-    
+
+
 
 def game_screen(window):
     # Variável para o ajuste de velocidade
     clock = pygame.time.Clock()
-
+    counter, conta = 40, '40'.rjust(3)
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
+    font = pygame.font.SysFont('Consolas', 30)    
     dicionario_de_arquivos = carrega_arquivos()
 
     DONE = 0
@@ -66,13 +69,21 @@ def game_screen(window):
             # ----- Verifica consequências
             if event.type == pygame.QUIT:
                 state = DONE
-
+            if event.type==pygame.USEREVENT:
+                counter-=1
+                conta=str(counter).rjust(3) if counter>-1 else state==DONE
+       
+       
         # ----- Gera saídas
         window.fill(BLACK)  # Preenche com a cor branca
         for circulo in circles:
             pygame.draw.circle(window, circulo['cor'], (circulo['x'], circulo['y']), circulo['r'])
         pygame.display.update()  # Mostra o novo frame para o jogador
-
+        window.blit(font.render(conta, True, (255,255,255)), (32, 48))
+        pygame.display.flip()
+        clock.tick(60)
+        
         
 
     return state
+   
