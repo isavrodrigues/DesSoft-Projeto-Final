@@ -59,7 +59,7 @@ def game_screen(window):
     state = PLAYING
 
     # guardando lista de circulos
-    circles = criar_numeros(8)
+    circles = criar_numeros(5)
     # ===== Loop principal =====
     while state != DONE:
         clock.tick(FPS)
@@ -79,7 +79,7 @@ def game_screen(window):
         for circulo in circles:
             pygame.draw.circle(window, circulo['cor'], (circulo['x'], circulo['y']), circulo['r'])
             font = circulo['texto']
-            text = font.render(str(circulo['num_circle']), True, (0, 0, 0))
+            text = font.render(str(circulo['num_circle']+1), True, (0, 0, 0))
             window.blit(text, (circulo['x'], circulo['y']))
         pygame.display.update()  # Mostra o novo frame para o jogador
         window.blit(font.render(conta, True, (255,255,255)), (32, 48))
