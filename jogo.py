@@ -5,6 +5,7 @@ import random
 from config import WIDTH, HEIGHT, INIT, GAME, QUIT
 from init_screen import init_screen
 from game_screen import game_screen
+from telafinal_screen import telafinal_screen
 
 pygame.init()
 pygame.mixer.init()
@@ -18,7 +19,9 @@ while state != QUIT:
     if state == INIT:
         state = init_screen(window)
     elif state == GAME:
-        state = game_screen(window)
+        state, pontuacao = game_screen(window)
+    elif state == 'tempo finalizado':
+        state = telafinal_screen(window, pontuacao)
     else:
         state = QUIT
 

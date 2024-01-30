@@ -77,7 +77,7 @@ def game_screen(window):
         clock.tick(FPS)
         # Verifica se o tempo expirou
         tempo_atual = pygame.time.get_ticks()
-        tempo_limite = (inicial - 2) * 1000  
+        tempo_limite = (inicial) * 1000  
         if (tempo_atual - inicio_sequencia) > tempo_limite:
            
             circles = criar_numeros(inicial)
@@ -111,7 +111,11 @@ def game_screen(window):
             cont = 1
             pontuacao += 1
             circles = criar_numeros(inicial)
-            inicio_sequencia = pygame.time.get_ticks() 
+            inicio_sequencia = pygame.time.get_ticks()
+
+        if counter <= 0:
+            print('tempo finalizado')
+            return 'tempo finalizado', pontuacao             
 
         # Renderização
         window.fill(BLACK)
