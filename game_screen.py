@@ -50,6 +50,8 @@ def colisao_ponto_circulo(x_ponto,y_ponto,x_circle,y_circle,r_circle):
         return True
     else:
         return False
+    
+
 
 def game_screen(window):
     # Variável para o ajuste de velocidade

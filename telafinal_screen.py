@@ -33,9 +33,9 @@ def telafinal_screen(window, pontuacao):
 
     while state != DONE:
         clock.tick(FPS)
-        # Trata eventos
+        #Trata eventos
         for event in pygame.event.get():
-            # Verifica consequências
+            #Verifica consequências
             if event.type == pygame.QUIT:
                 state = DONE
         # Renderização
